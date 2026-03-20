@@ -1,0 +1,88 @@
+/* css/student.css — Student signout page additions */
+
+/* Status banners */
+.banner {
+    width: 100%;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-align: left;
+    box-sizing: border-box;
+}
+.banner-open   { background: #e6f9f0; color: #1a7a4a; border: 1px solid #a3e4c1; }
+.banner-closed { background: #fdecea; color: #b91c1c; border: 1px solid #fca5a5; }
+.banner-active { background: #eff6ff; color: #1d4ed8; border: 1px solid #93c5fd; }
+.banner-warn   { background: #fffbeb; color: #92400e; border: 1px solid #fcd34d; }
+
+/* Active ticket panel */
+.active-ticket-panel {
+    width: 100%;
+    background: var(--accent-bg);
+    border: 2px solid var(--accent-primary);
+    border-radius: 12px;
+    padding: 16px;
+    box-sizing: border-box;
+    text-align: left;
+    margin-top: 4px;
+}
+.active-ticket-panel.hidden { display: none; }
+
+.active-label {
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-secondary);
+    margin-bottom: 6px !important;
+}
+
+#active-ticket-info {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    margin-bottom: 4px !important;
+}
+
+.ticket-status-pending  { color: #92400e; font-weight: 600; }
+.ticket-status-accepted { color: #1a7a4a; font-weight: 600; }
+.ticket-status-denied   { color: #b91c1c; font-weight: 600; }
+
+#close-ticket-btn {
+    margin-top: 10px;
+    border: 2px solid var(--accent-primary);
+    border-radius: 100vh;
+    padding: 0.5em 2em;
+    background: transparent;
+    font: inherit;
+    color: var(--accent-primary);
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 150ms;
+    font-size: 0.8rem;
+}
+#close-ticket-btn:hover { background: var(--accent-primary); color: white; }
+
+/* Secondary inline sign-out */
+.secondary-btn-inline {
+    margin-top: 4px;
+    border: 2px solid var(--bg-tertiary);
+    border-radius: 100vh;
+    padding: 0.6em 2.5em;
+    background: transparent;
+    font: inherit;
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 150ms;
+}
+.secondary-btn-inline:hover { border-color: var(--error); color: var(--error); }
+
+/* Selected tag */
+li.selected {
+    background-color: var(--accent-primary);
+    color: var(--text-reverse);
+    border-color: var(--accent-secondary);
+}

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <title>Ticketron — Login</title>
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <script src="config.js" defer></script>
+        <script src="js/login.js" defer></script>
+        <link rel="stylesheet" href="main.css">
+        <link rel="stylesheet" href="css/login.css">
+    </head>
+    <body class="background">
+        <form id="login-form" class="wrapper" autocomplete="off">
+
+            <div class="brand">
+                <svg xmlns="http://www.w3.org/2000/svg" height="36px" viewBox="0 -960 960 960" width="36px" fill="currentColor">
+                    <path d="M829-275v-266L480-351 25.5-599.5l454.5-247 455 247.07V-275H829ZM480-121 194-274.9v-179.6l286 155.82L766-454.5V-275L480-121Z"/>
+                </svg>
+                <span>Ticketron</span>
+            </div>
+
+            <h1>Welcome<br>Back</h1>
+            <p class="subtitle">Sign in to continue</p>
+
+            <div id="username-wrap">
+                <label for="username-input">
+                    <!-- person icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+                        <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 128.5-46.5T480-440q66 0 132.5 15.5T741-378q29 15 46.5 43.5T805-272v112H160Z"/>
+                    </svg>
+                </label>
+                <input class="form-input" type="text" name="username-input" id="username-input" placeholder="Username" autocomplete="off" spellcheck="false">
+            </div>
+
+            <div id="password-wrap">
+                <label for="password-input">
+                    <!-- lock icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+                        <path d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920q83 0 141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80H240Zm240-200q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM360-640h240v-80q0-50-35-85t-85-35q-50 0-85 35t-35 85v80Z"/>
+                    </svg>
+                </label>
+                <input class="form-input" type="password" name="password-input" id="password-input" placeholder="Password" autocomplete="off">
+            </div>
+
+            <p id="login-error"></p>
+
+            <button type="submit">Sign In</button>
+
+            <div class="divider"><span>or</span></div>
+
+            <button type="button" id="register-btn" class="secondary-btn">Create Account</button>
+        </form>
+
+        <!-- Register overlay -->
+        <div id="register-overlay" class="overlay hidden">
+            <form id="register-form" class="wrapper overlay-panel" autocomplete="off">
+                <button type="button" id="back-btn" class="back-btn" aria-label="Back">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
+                        <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/>
+                    </svg>
+                </button>
+
+                <h1>Create<br>Account</h1>
+                <p class="subtitle">Join Ticketron</p>
+
+                <div id="reg-username-wrap">
+                    <label for="reg-username">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+                            <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 128.5-46.5T480-440q66 0 132.5 15.5T741-378q29 15 46.5 43.5T805-272v112H160Z"/>
+                        </svg>
+                    </label>
+                    <input class="form-input" type="text" id="reg-username" placeholder="Username (4–24 chars, letters & numbers)" autocomplete="off" spellcheck="false">
+                </div>
+
+                <div id="reg-password-wrap">
+                    <label for="reg-password">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+                            <path d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920q83 0 141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80H240Zm240-200q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM360-640h240v-80q0-50-35-85t-85-35q-50 0-85 35t-35 85v80Z"/>
+                        </svg>
+                    </label>
+                    <input class="form-input" type="password" id="reg-password" placeholder="Password (letter + number required)" autocomplete="off">
+                </div>
+
+                <div id="reg-confirm-wrap">
+                    <label for="reg-confirm">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+                            <path d="m438-452-58-57q-11-11-27.5-11T324-508q-11 11-11 28t11 28l86 86q12 12 28 12t28-12l170-170q11-11 11-28t-11-28q-11-11-28-11t-28 11L438-452Zm42 372q-139-35-229.5-159.5T160-516v-244l320-120 320 120v244q0 152-90.5 276.5T480-80Z"/>
+                        </svg>
+                    </label>
+                    <input class="form-input" type="password" id="reg-confirm" placeholder="Confirm Password" autocomplete="off">
+                </div>
+
+                <p id="register-error"></p>
+
+                <div class="role-toggle-wrap">
+                    <span class="role-toggle-icon">🎓</span>
+                    <label class="toggle-switch" for="role-toggle">
+                        <input type="checkbox" id="role-toggle">
+                        <span class="toggle-track">
+                            <span class="toggle-thumb"></span>
+                        </span>
+                    </label>
+                    <span id="role-label">Student Account</span>
+                </div>
+
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </body>
+</html>

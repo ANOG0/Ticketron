@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('css/register-ticket.css');
+
+:root {
+    --bg-primary: rgb(255, 253, 250);
+    --bg-secondary: rgb(232, 233, 240);
+    --bg-tertiary: rgb(205, 208, 223);
+    --accent-bg: rgb(206, 211, 255);
+    --error: rgb(255, 0, 0);
+
+    --accent-light: rgb(223, 222, 255);
+    --accent-primary: rgb(50, 47, 255);
+    --accent-secondary: rgb(27, 29, 165);
+
+    --text-primary: rgb(22, 22, 24);
+    --text-secondary: rgb(111, 113, 221);
+    --text-reverse: rgb(255, 255, 255);
+}
+
+p {
+    color: var(--text-secondary);
+}
+
+.background {
+    min-height: 100vh;
+    background-image: url('imgs/background.jpg');
+    background-position: center;
+    background-size: cover;
+    overflow: hidden;
+}
+
+.apply-shake {
+  animation: shake 0.2s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
+}
