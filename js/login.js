@@ -1,15 +1,15 @@
 // js/login.js
 document.addEventListener('DOMContentLoaded', () => {
 
-    const KEY = CONFIG.STORAGE_PREFIX + '__currentUser';
+    const KEY = CONFIG.STORAGE_PREFIX + 'currentUser';
 
     function getStoredUser() {
         try { return JSON.parse(localStorage.getItem(KEY)); } catch { return null; }
     }
     function getUsers() {
-        try { return JSON.parse(localStorage.getItem(CONFIG.STORAGE_PREFIX + '__users')) || []; } catch { return []; }
+        try { return JSON.parse(localStorage.getItem(CONFIG.STORAGE_PREFIX + 'users')) || []; } catch { return []; }
     }
-    function saveUsers(u)       { localStorage.setItem(CONFIG.STORAGE_PREFIX + '__users', JSON.stringify(u)); }
+    function saveUsers(u)       { localStorage.setItem(CONFIG.STORAGE_PREFIX + 'users', JSON.stringify(u)); }
     function saveCurrentUser(u) { localStorage.setItem(KEY, JSON.stringify(u)); }
 
     function goToRole(user) {
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const existing = getStoredUser();
     if (existing && existing.role) { goToRole(existing); return; }
 
-    // ── Elements ──────────────────────────────────────────────────────────────
+    //  Elements 
     const loginForm     = document.getElementById('login-form');
     const registerForm  = document.getElementById('register-form');
     const registerBtn   = document.getElementById('register-btn');
@@ -39,12 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const roleToggle    = document.getElementById('role-toggle');
     const roleLabel     = document.getElementById('role-label');
 
-    // ── Role toggle ───────────────────────────────────────────────────────────
+    //  Role toggle 
     roleToggle.addEventListener('change', () => {
         roleLabel.textContent = roleToggle.checked ? 'Teacher Account' : 'Student Account';
     });
 
-    // ── Field helpers ─────────────────────────────────────────────────────────
+    //  Field helpers 
     function fieldError(wrapId, on) {
         const el = document.getElementById(wrapId);
         if (!el) return;
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     clearOn(regPassword,   'reg-password-wrap', registerError);
     clearOn(regConfirm,    'reg-confirm-wrap',  registerError);
 
-    // ── Login ─────────────────────────────────────────────────────────────────
+    //  Login 
     loginForm.addEventListener('submit', e => {
         e.preventDefault();
         const username = usernameInput.value.trim();
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         goToRole(user);
     });
 
-    // ── Register overlay ──────────────────────────────────────────────────────
+    //  Register overlay 
     registerBtn.addEventListener('click', () => {
         overlay.classList.remove('hidden');
         overlayPanel.classList.remove('leaving');
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { once: true });
     }
 
-    // ── Register ──────────────────────────────────────────────────────────────
+    //  Register 
     registerForm.addEventListener('submit', e => {
         e.preventDefault();
         const username = regUsername.value.trim();

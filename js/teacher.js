@@ -1,8 +1,8 @@
 // js/teacher.js — Teacher Dashboard
 document.addEventListener('DOMContentLoaded', () => {
 
-    // ── Auth check ────────────────────────────────────────────────────────────
-    const KEY = CONFIG.STORAGE_PREFIX + '__currentUser';
+    //  Auth check 
+    const KEY = CONFIG.STORAGE_PREFIX + 'currentUser';
     let currentUser = null;
     try { currentUser = JSON.parse(localStorage.getItem(KEY)); } catch {}
 
@@ -11,17 +11,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     STATE.currentUser = currentUser;
 
-    // ── Storage helpers ───────────────────────────────────────────────────────
-    function getTickets()   { try { return JSON.parse(localStorage.getItem(CONFIG.STORAGE_PREFIX + '__tickets')) || []; } catch { return []; } }
-    function saveTickets(t) { localStorage.setItem(CONFIG.STORAGE_PREFIX + '__tickets', JSON.stringify(t)); }
+    //  Storage helpers 
+    function getTickets()   { try { return JSON.parse(localStorage.getItem(CONFIG.STORAGE_PREFIX + 'tickets')) || []; } catch { return []; } }
+    function saveTickets(t) { localStorage.setItem(CONFIG.STORAGE_PREFIX + 'tickets', JSON.stringify(t)); }
     function getSettings()  {
-        try { return JSON.parse(localStorage.getItem(CONFIG.STORAGE_PREFIX + '__settings')) || defaultSettings(); }
+        try { return JSON.parse(localStorage.getItem(CONFIG.STORAGE_PREFIX + 'settings')) || defaultSettings(); }
         catch { return defaultSettings(); }
     }
-    function saveSettings(s) { localStorage.setItem(CONFIG.STORAGE_PREFIX + '__settings', JSON.stringify(s)); }
+    function saveSettings(s) { localStorage.setItem(CONFIG.STORAGE_PREFIX + 'settings', JSON.stringify(s)); }
     function defaultSettings() { return { ticketsOpen: true, maxActive: 5, maxPerStudent: 3, windowMinutes: 60 }; }
 
-    // ── Init UI ───────────────────────────────────────────────────────────────
+    //  Init UI 
     document.getElementById('teacher-name').textContent = currentUser.username;
 
     const tabTickets    = document.getElementById('tab-tickets');
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.replace('login.html');
     });
 
-    // ── Tickets ───────────────────────────────────────────────────────────────
+    //  Tickets 
     const ticketList = document.getElementById('ticket-list');
     const filterBtns = document.querySelectorAll('.filter-btn');
     let activeFilter = 'pending';
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (idx !== -1) { tickets[idx].status = status; saveTickets(tickets); renderTickets(); }
     }
 
-    // ── Settings ──────────────────────────────────────────────────────────────
+    //  Settings 
     function renderSettings() {
         const s = getSettings();
         document.getElementById('setting-tickets-open').checked     = !!s.ticketsOpen;

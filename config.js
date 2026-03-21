@@ -5,16 +5,12 @@ const CONFIG = {
     STORAGE_PREFIX: 'TicketronStore',
     
     // Post types
-    TICKET_TYPES: ['pass', 'office', 'nurse', 'other'],
+    TICKET_TYPES: ['pass', 'office', 'nurse', 'other', 'library', 'restroom', 'counselor', 'locker'],
     
     // Member types
     MEMBER_TYPES: {
         FREE: 'free',
         DEVELOPER: 'developer'
-    },
-
-    TICKET_FORMAT: {
-        newGUUID: () => crypto.randomUUID(),
     },
     
     // Validation Rules
