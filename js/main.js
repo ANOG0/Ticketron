@@ -1,4 +1,3 @@
-// js/main.js — Student Signout Page
 document.addEventListener('DOMContentLoaded', () => {
     const KEY = CONFIG.STORAGE_PREFIX + 'currentUser';
     let currentUser = null;
@@ -7,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (currentUser.role === 'teacher') { window.location.replace('teacher.html'); return; }
 
     STATE.currentUser = currentUser;
-    nameInput.display = 'none'
+
 
     //  DOM refs 
     const user = STATE.currentUser;
@@ -33,11 +32,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const reasonItems  = document.querySelectorAll('.tag-wrapper li');
 
     // Update header
-    document.querySelector('h1').textContent = 'Signout';
+    document.querySelector('h1').textContent = 'Ticketron';
     document.querySelector('h2').textContent = user.username;
 
     // Pre-fill name
-    nameInput.value = user.username;
+    nameInput.value = user.username
+    nameInput.disabled = true
 
     // Status banner
     statusBanner.id = 'status-banner';
@@ -47,14 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const activePanel = document.getElementById('active-ticket-panel');
 
     // Sign out button
-    const signOutBtn = document.createElement('button');
-    signOutBtn.type = 'button';
-    signOutBtn.classList.add('secondary-btn-inline');
-    signOutBtn.textContent = 'Sign Out';
+    const signOutBtn = document.getElementById('signout-button');
     signOutBtn.addEventListener('click', () => {
         localStorage.removeItem(KEY);
-        window.location.replace('login.html');
+        window.location.replace('teacher.html');
     });
+
     form.appendChild(signOutBtn);
 
     //  Reason selection 
@@ -69,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //  Render 
     function render() {
-        const settings = STORAGE_HELPER.STORAGE_HELPER.getSettings();
+        const settings = STORAGE_HELPER.getSettings();
         const tickets  = STORAGE_HELPER.getTickets();
         const myTicket = tickets.find(t => t.studentId === user.id && t.status !== 'closed');
         const pendingCount = tickets.filter(t => t.status === 'pending').length;
@@ -115,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
             statusBanner.className = 'ticket-status-' + myTicket.status;
 
             document.getElementById('close-ticket-btn').onclick = () => {
-                const all = getTickets();
+                const all = STORAGE_HELPER.getTickets();
                 const idx = all.findIndex(t => t.id === myTicket.id);
                 if (idx !== -1) { all[idx].status = 'closed'; STORAGE_HELPER.saveTickets(all); }
                 render();
@@ -137,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', e => {
         e.preventDefault();
         const settings = STORAGE_HELPER.getSettings();
-        const tickets  = getTickets();
+        const tickets  = STORAGE_HELPER.getTickets();
         const pendingCount = tickets.filter(t => t.status === 'pending').length;
         const windowMs = (settings.windowMinutes || 60) * 60 * 1000;
         const recentMine = tickets.filter(t => t.studentId === user.id && (Date.now() - t.createdAt) < windowMs).length;
@@ -160,6 +158,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (recentMine >= settings.maxPerStudent && !err) err = 'You have reached your ticket limit.';
 
         if (err) { errorMsg.textContent = err; return; }
+        
+        Notify.success("Ticket Created!")
 
         errorMsg.textContent = ''
 
@@ -187,6 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Poll every 4s for teacher status changes
-    setInterval(render, 4000);
+    setInterval(render, 1000);
     render();
 });

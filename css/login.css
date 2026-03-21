@@ -177,6 +177,7 @@ html {
 /*  Toggle switch (reused in teacher.css too)  */
 .toggle-switch {
     position: relative; display: inline-block;
+    border-radius: 1000px;
     width: 46px; height: 26px; flex-shrink: 0; cursor: pointer;
 }
 .toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
@@ -192,4 +193,3 @@ html {
     transition: 200ms; box-shadow: 0 1px 3px rgba(0,0,0,.2);
 }
 .toggle-switch input:checked + .toggle-track .toggle-thumb { transform: translateX(20px); }
-

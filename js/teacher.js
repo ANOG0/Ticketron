@@ -1,4 +1,35 @@
 // js/teacher.js — Teacher Dashboard
+// const STORAGE_HELPER = {
+//     getTickets(){
+//         try{
+//             return JSON.parse(localStorage.getItem(CONFIG.STORAGE_PREFIX + 'tickets')) || [];
+//         } catch { 
+//             return []; 
+//         }
+//     },
+
+//     saveTickets(t){
+//         localStorage.setItem(CONFIG.STORAGE_PREFIX + 'tickets', JSON.stringify(t));
+//     },
+
+//     getSettings(){
+//         try {
+//             return JSON.parse(localStorage.getItem(CONFIG.STORAGE_PREFIX + 'settings')) || this.defaultSettings()
+//         } catch {
+//             return this.defaultSettings()
+//         }
+//     },
+
+//     defaultSettings() {
+//         return {
+//             ticketsOpen: true,
+//             maxActive: 5,
+//             maxPerStudent: 3,
+//             windowMinutes: 60
+//         }
+//     }
+// }
+
 document.addEventListener('DOMContentLoaded', () => {
 
     //  Auth check 
@@ -12,14 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
     STATE.currentUser = currentUser;
 
     //  Storage helpers 
-    function getTickets()   { try { return JSON.parse(localStorage.getItem(CONFIG.STORAGE_PREFIX + 'tickets')) || []; } catch { return []; } }
-    function saveTickets(t) { localStorage.setItem(CONFIG.STORAGE_PREFIX + 'tickets', JSON.stringify(t)); }
-    function getSettings()  {
-        try { return JSON.parse(localStorage.getItem(CONFIG.STORAGE_PREFIX + 'settings')) || defaultSettings(); }
-        catch { return defaultSettings(); }
-    }
-    function saveSettings(s) { localStorage.setItem(CONFIG.STORAGE_PREFIX + 'settings', JSON.stringify(s)); }
-    function defaultSettings() { return { ticketsOpen: true, maxActive: 5, maxPerStudent: 3, windowMinutes: 60 }; }
 
     //  Init UI 
     document.getElementById('teacher-name').textContent = currentUser.username;
@@ -76,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderTickets() {
-        const tickets  = getTickets();
+        const tickets  = STORAGE_HELPER.getTickets();
         const filtered = tickets
             .filter(t => activeFilter === 'all' || t.status === activeFilter)
             .sort((a, b) => b.createdAt - a.createdAt);
@@ -116,14 +139,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateTicket(id, status) {
-        const tickets = getTickets();
+        const tickets = STORAGE_HELPER.getTickets();
         const idx = tickets.findIndex(t => t.id === id);
-        if (idx !== -1) { tickets[idx].status = status; saveTickets(tickets); renderTickets(); }
+        if (idx !== -1) { tickets[idx].status = status; STORAGE_HELPER.saveTickets(tickets); renderTickets(); }
     }
 
     //  Settings 
     function renderSettings() {
-        const s = getSettings();
+        const s = STORAGE_HELPER.getSettings();
         document.getElementById('setting-tickets-open').checked     = !!s.ticketsOpen;
         document.getElementById('setting-max-active').value         = s.maxActive     || 5;
         document.getElementById('setting-max-per-student').value    = s.maxPerStudent || 3;
@@ -132,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('settings-form').addEventListener('submit', e => {
         e.preventDefault();
-        saveSettings({
+        STORAGE_HELPER.saveSettings({
             ticketsOpen:   document.getElementById('setting-tickets-open').checked,
             maxActive:     parseInt(document.getElementById('setting-max-active').value)      || 5,
             maxPerStudent: parseInt(document.getElementById('setting-max-per-student').value) || 3,
@@ -144,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Poll every 5s
-    setInterval(() => { if (!panelTickets.classList.contains('hidden')) renderTickets(); }, 5000);
+    setInterval(() => { if (!panelTickets.classList.contains('hidden')) renderTickets(); }, 500);
 
     // Boot
     showTab('tickets');

@@ -1,0 +1,387 @@
+/* ═══════════════════════════════════════════════════════
+   NOTIFY.CSS  —  Drop-in Notification System
+   ═══════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+
+/* ── CSS Custom Properties ────────────────────────────── */
+:root {
+  --notify-font: 'DM Sans', system-ui, sans-serif;
+
+  /* Light theme */
+  --notify-bg: #ffffff;
+  --notify-bg-hover: #f8f8f8;
+  --notify-text: #111111;
+  --notify-subtext: #666666;
+  --notify-border: rgba(0, 0, 0, 0.08);
+  --notify-shadow-subtle: 0 2px 8px rgba(0,0,0,0.08);
+  --notify-shadow-normal: 0 4px 24px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.06);
+  --notify-shadow-strong: 0 8px 40px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08);
+  --notify-close-color: #999999;
+  --notify-close-hover: #333333;
+  --notify-progress-bg: rgba(0,0,0,0.06);
+
+  /* Types */
+  --notify-success: #16a34a;
+  --notify-success-bg: #f0fdf4;
+  --notify-success-icon-bg: #dcfce7;
+
+  --notify-error: #dc2626;
+  --notify-error-bg: #fff1f2;
+  --notify-error-icon-bg: #ffe4e6;
+
+  --notify-warning: #d97706;
+  --notify-warning-bg: #fffbeb;
+  --notify-warning-icon-bg: #fef3c7;
+
+  --notify-info: #2563eb;
+  --notify-info-bg: #eff6ff;
+  --notify-info-icon-bg: #dbeafe;
+
+  --notify-default: #374151;
+  --notify-default-bg: #f9fafb;
+  --notify-default-icon-bg: #f3f4f6;
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+  :root[data-notify-theme="auto"],
+  :root:not([data-notify-theme]) {
+    --notify-bg: #1c1c1e;
+    --notify-bg-hover: #2c2c2e;
+    --notify-text: #f5f5f7;
+    --notify-subtext: #a1a1aa;
+    --notify-border: rgba(255, 255, 255, 0.08);
+    --notify-shadow-subtle: 0 2px 8px rgba(0,0,0,0.4);
+    --notify-shadow-normal: 0 4px 24px rgba(0,0,0,0.5), 0 1px 4px rgba(0,0,0,0.3);
+    --notify-shadow-strong: 0 8px 40px rgba(0,0,0,0.6), 0 2px 8px rgba(0,0,0,0.4);
+    --notify-close-color: #71717a;
+    --notify-close-hover: #d4d4d8;
+    --notify-progress-bg: rgba(255,255,255,0.08);
+
+    --notify-success-bg: #052e16;
+    --notify-success-icon-bg: #14532d;
+    --notify-error-bg: #2d0f0f;
+    --notify-error-icon-bg: #450a0a;
+    --notify-warning-bg: #2d1a00;
+    --notify-warning-icon-bg: #431d00;
+    --notify-info-bg: #0d1f3c;
+    --notify-info-icon-bg: #1e3a5f;
+    --notify-default-bg: #18181b;
+    --notify-default-icon-bg: #27272a;
+  }
+}
+
+[data-notify-theme="dark"] {
+  --notify-bg: #1c1c1e;
+  --notify-bg-hover: #2c2c2e;
+  --notify-text: #f5f5f7;
+  --notify-subtext: #a1a1aa;
+  --notify-border: rgba(255, 255, 255, 0.08);
+  --notify-shadow-subtle: 0 2px 8px rgba(0,0,0,0.4);
+  --notify-shadow-normal: 0 4px 24px rgba(0,0,0,0.5), 0 1px 4px rgba(0,0,0,0.3);
+  --notify-shadow-strong: 0 8px 40px rgba(0,0,0,0.6), 0 2px 8px rgba(0,0,0,0.4);
+  --notify-close-color: #71717a;
+  --notify-close-hover: #d4d4d8;
+  --notify-progress-bg: rgba(255,255,255,0.08);
+
+  --notify-success-bg: #052e16;
+  --notify-success-icon-bg: #14532d;
+  --notify-error-bg: #2d0f0f;
+  --notify-error-icon-bg: #450a0a;
+  --notify-warning-bg: #2d1a00;
+  --notify-warning-icon-bg: #431d00;
+  --notify-info-bg: #0d1f3c;
+  --notify-info-icon-bg: #1e3a5f;
+  --notify-default-bg: #18181b;
+  --notify-default-icon-bg: #27272a;
+}
+
+[data-notify-theme="light"] {
+  --notify-bg: #ffffff;
+  --notify-bg-hover: #f8f8f8;
+  --notify-text: #111111;
+  --notify-subtext: #666666;
+  --notify-border: rgba(0, 0, 0, 0.08);
+  --notify-shadow-subtle: 0 2px 8px rgba(0,0,0,0.08);
+  --notify-shadow-normal: 0 4px 24px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.06);
+  --notify-shadow-strong: 0 8px 40px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08);
+  --notify-close-color: #999999;
+  --notify-close-hover: #333333;
+  --notify-progress-bg: rgba(0,0,0,0.06);
+}
+
+/* ── Container ────────────────────────────────────────── */
+.notify-container {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: 0;               /* gap managed by JS for smooth push */
+  pointer-events: none;
+  z-index: var(--notify-z, 9999);
+  font-family: var(--notify-font);
+  box-sizing: border-box;
+}
+
+/* Position variants */
+.notify-container[data-pos^="top"]    { flex-direction: column; }
+.notify-container[data-pos^="bottom"] { flex-direction: column-reverse; }
+
+/* ── Toast ────────────────────────────────────────────── */
+.notify-toast {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--notify-radius, 12px);
+  background: var(--notify-bg);
+  border: 1px solid var(--notify-border);
+  min-width: var(--notify-min-w, 300px);
+  max-width: var(--notify-max-w, 420px);
+  pointer-events: all;
+  cursor: default;
+  box-sizing: border-box;
+  overflow: hidden;
+  will-change: transform, opacity;
+  transition:
+    transform var(--notify-anim-dur, 320ms) cubic-bezier(0.34, 1.20, 0.64, 1),
+    opacity var(--notify-anim-dur, 320ms) ease,
+    margin-bottom var(--notify-anim-dur, 320ms) cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 200ms ease;
+}
+
+.notify-toast:hover {
+  background: var(--notify-bg-hover);
+}
+
+/* Shadow variants */
+.notify-toast[data-shadow="none"]   { box-shadow: none; }
+.notify-toast[data-shadow="subtle"] { box-shadow: var(--notify-shadow-subtle); }
+.notify-toast[data-shadow="normal"] { box-shadow: var(--notify-shadow-normal); }
+.notify-toast[data-shadow="strong"] { box-shadow: var(--notify-shadow-strong); }
+
+/* Accent border */
+.notify-toast[data-accent="true"] {
+  border-left-width: 4px;
+}
+.notify-toast[data-type="success"][data-accent="true"] { border-left-color: var(--notify-success); background: var(--notify-success-bg); }
+.notify-toast[data-type="error"][data-accent="true"]   { border-left-color: var(--notify-error);   background: var(--notify-error-bg); }
+.notify-toast[data-type="warning"][data-accent="true"] { border-left-color: var(--notify-warning); background: var(--notify-warning-bg); }
+.notify-toast[data-type="info"][data-accent="true"]    { border-left-color: var(--notify-info);    background: var(--notify-info-bg); }
+.notify-toast[data-type="default"][data-accent="true"] { border-left-color: var(--notify-default); background: var(--notify-default-bg); }
+
+/* Enter state — set by JS before appending */
+.notify-toast.notify-entering {
+  opacity: 0;
+}
+.notify-toast.notify-entering[data-slide="right"] { transform: translateX(calc(100% + 48px)); }
+.notify-toast.notify-entering[data-slide="left"]  { transform: translateX(calc(-100% - 48px)); }
+.notify-toast.notify-entering[data-slide="up"]    { transform: translateY(-120%); }
+.notify-toast.notify-entering[data-slide="down"]  { transform: translateY(120%); }
+
+/* Visible state */
+.notify-toast.notify-visible {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* Exit state */
+.notify-toast.notify-exiting {
+  opacity: 0;
+  transform: scale(0.92);
+  transition:
+    transform 200ms ease,
+    opacity 200ms ease,
+    margin-bottom var(--notify-anim-dur, 320ms) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Shake / bump for duplicates */
+@keyframes notify-shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+.notify-toast.notify-shake {
+  animation: notify-shake 400ms cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+/* ── Icon ────────────────────────────────────────────── */
+.notify-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.notify-toast[data-type="success"] .notify-icon { background: var(--notify-success-icon-bg); color: var(--notify-success); }
+.notify-toast[data-type="error"]   .notify-icon { background: var(--notify-error-icon-bg);   color: var(--notify-error); }
+.notify-toast[data-type="warning"] .notify-icon { background: var(--notify-warning-icon-bg); color: var(--notify-warning); }
+.notify-toast[data-type="info"]    .notify-icon { background: var(--notify-info-icon-bg);    color: var(--notify-info); }
+.notify-toast[data-type="default"] .notify-icon { background: var(--notify-default-icon-bg); color: var(--notify-default); }
+
+.notify-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+/* ── Body ─────────────────────────────────────────────── */
+.notify-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 4px;
+}
+
+.notify-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--notify-text);
+  line-height: 1.3;
+  margin: 0;
+}
+
+.notify-message {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--notify-subtext);
+  line-height: 1.5;
+  margin: 0;
+  word-break: break-word;
+}
+
+/* When there's only a message, no title */
+.notify-body:not(:has(.notify-title)) .notify-message {
+  color: var(--notify-text);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ── Close Button ─────────────────────────────────────── */
+.notify-close {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--notify-close-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-top: 2px;
+  transition: color 150ms ease, background 150ms ease;
+  line-height: 1;
+  font-size: 16px;
+}
+
+.notify-close:hover {
+  color: var(--notify-close-hover);
+  background: var(--notify-border);
+}
+
+.notify-close svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  fill: none;
+}
+
+/* ── Progress Bar ─────────────────────────────────────── */
+.notify-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: var(--notify-progress-bg);
+  width: 100%;
+}
+
+.notify-progress-fill {
+  height: 100%;
+  width: 100%;
+  transform-origin: left center;
+  transition: transform linear;
+  border-radius: 0 2px 2px 0;
+}
+
+.notify-toast[data-type="success"] .notify-progress-fill { background: var(--notify-success); }
+.notify-toast[data-type="error"]   .notify-progress-fill { background: var(--notify-error); }
+.notify-toast[data-type="warning"] .notify-progress-fill { background: var(--notify-warning); }
+.notify-toast[data-type="info"]    .notify-progress-fill { background: var(--notify-info); }
+.notify-toast[data-type="default"] .notify-progress-fill { background: var(--notify-default); }
+
+/* ── Action Buttons ───────────────────────────────────── */
+.notify-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.notify-action-btn {
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--notify-border);
+  background: transparent;
+  color: var(--notify-text);
+  font-family: var(--notify-font);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 150ms ease, border-color 150ms ease;
+}
+
+.notify-action-btn:hover {
+  background: var(--notify-border);
+}
+
+.notify-action-btn.notify-action-primary {
+  background: var(--notify-text);
+  color: var(--notify-bg);
+  border-color: var(--notify-text);
+}
+
+.notify-action-btn.notify-action-primary:hover {
+  opacity: 0.85;
+}
+
+/* ── Responsive ───────────────────────────────────────── */
+@media (max-width: 480px) {
+  .notify-container {
+    left: 12px !important;
+    right: 12px !important;
+    bottom: 12px !important;
+    top: auto !important;
+    align-items: stretch !important;
+    width: auto !important;
+  }
+
+  .notify-container[data-pos^="top"] {
+    top: 12px !important;
+    bottom: auto !important;
+  }
+
+  .notify-toast {
+    min-width: unset;
+    max-width: unset;
+    width: 100%;
+  }
+}

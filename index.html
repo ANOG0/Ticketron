@@ -9,6 +9,10 @@
         <script src="js/main.js" defer></script>
         <link rel="stylesheet" href="main.css">
         <link rel="stylesheet" href="css/student.css">
+
+        <link rel="stylesheet" href="notify/notify.css" />
+        <script src="notify/notify.config.js"></script>
+        <script src="notify/notify.js"></script>
     </head>
     <body class="background">
         <form id="form" class="wrapper">
@@ -40,15 +44,13 @@
             <p>----------------------------------------</p>
 
             <div class="tag-wrapper">
-                <ul id="tags">
-                </ul>
+                <ul id="tags"></ul>
             </div>
 
-            <p id="error-messages">
-                
-            </p>
-
+            <p id="error-messages"> </p>
             <button type="submit">Submit</button>
+
+            <button type="button" id="signout-button" class="secondary-btn-inline">Sign Out</button>
         </form>
     </body>
 </html>

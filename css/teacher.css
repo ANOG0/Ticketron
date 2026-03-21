@@ -298,10 +298,18 @@ html {
 }
 
 .toggle-switch {
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 10000px;
     position: relative; display: inline-block;
     width: 46px; height: 26px; flex-shrink: 0; cursor: pointer;
 }
-.toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+.toggle-switch input {
+    background-color: rgba(0, 0, 0, 0);
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
 .toggle-track {
     position: absolute; inset: 0;
     background-color: var(--bg-tertiary);
@@ -335,3 +343,4 @@ html {
 .saved-msg.hidden { opacity: 0; pointer-events: none; }
 
 .hidden { display: none !important; }
+

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notify — Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="notify.css" />
+  <script src="notify.config.js"></script>
+  <script src="notify.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0f11;
+      --surface: #18181b;
+      --surface2: #222226;
+      --border: rgba(255,255,255,0.07);
+      --text: #f4f4f5;
+      --muted: #71717a;
+      --accent: #6366f1;
+      --accent2: #818cf8;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .demo-header {
+      text-align: center;
+      margin-bottom: 52px;
+    }
+
+    .demo-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 12px;
+    }
+
+    .demo-title {
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: var(--text);
+    }
+
+    .demo-title span {
+      background: linear-gradient(135deg, #6366f1, #a78bfa, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .demo-sub {
+      margin-top: 14px;
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 460px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Grid */
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .demo-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .demo-card-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .btn-grid.single { grid-template-columns: 1fr; }
+
+    button {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 10px 14px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 150ms ease;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface2);
+      color: var(--text);
+    }
+
+    button:hover {
+      border-color: rgba(255,255,255,0.15);
+      background: #2c2c32;
+      transform: translateY(-1px);
+    }
+
+    button:active { transform: translateY(0); }
+
+    button .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .dot-success { background: #22c55e; }
+    .dot-error   { background: #ef4444; }
+    .dot-warning { background: #f59e0b; }
+    .dot-info    { background: #3b82f6; }
+    .dot-default { background: #6b7280; }
+    .dot-accent  { background: var(--accent); }
+
+    /* Position selector */
+    .pos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      background: var(--surface2);
+      border-radius: 10px;
+      padding: 8px;
+      margin-bottom: 12px;
+    }
+
+    .pos-btn {
+      font-size: 11px;
+      padding: 7px 6px;
+      border-radius: 6px;
+      text-align: center;
+      justify-content: center;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--muted);
+      gap: 0;
+    }
+
+    .pos-btn:hover { background: var(--surface); border-color: var(--border); color: var(--text); transform: none; }
+    .pos-btn.active { background: var(--accent); color: white; border-color: transparent; }
+
+    .code-snippet {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-top: 12px;
+      overflow-x: auto;
+    }
+
+    .code-snippet .kw  { color: #a78bfa; }
+    .code-snippet .fn  { color: #38bdf8; }
+    .code-snippet .str { color: #86efac; }
+    .code-snippet .num { color: #fbbf24; }
+
+    .dismiss-all-btn {
+      margin-top: 16px;
+      width: 100%;
+      justify-content: center;
+      background: rgba(99,102,241,0.12);
+      border-color: rgba(99,102,241,0.25);
+      color: var(--accent2);
+    }
+
+    .dismiss-all-btn:hover {
+      background: rgba(99,102,241,0.2);
+      border-color: rgba(99,102,241,0.4);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-header">
+    <p class="demo-eyebrow">Zero dependency</p>
+    <h1 class="demo-title">notify<span>.</span>js</h1>
+    <p class="demo-sub">Drop-in toast notifications. One folder, two script tags, works anywhere.</p>
+  </div>
+
+  <div class="demo-grid">
+
+    <!-- Types -->
+    <div class="demo-card">
+      <p class="demo-card-title">Types</p>
+      <div class="btn-grid">
+        <button onclick="Notify.success('Changes saved successfully.')">
+          <span class="dot dot-success"></span> Success
+        </button>
+        <button onclick="Notify.error('Failed to connect to server.')">
+          <span class="dot dot-error"></span> Error
+        </button>
+        <button onclick="Notify.warning('Storage almost full.', { title: 'Warning' })">
+          <span class="dot dot-warning"></span> Warning
+        </button>
+        <button onclick="Notify.info('A new version is available.', { title: 'Update' })">
+          <span class="dot dot-info"></span> Info
+        </button>
+        <button onclick="Notify.show({ message: 'This is a plain notification.' })" style="grid-column: span 2;">
+          <span class="dot dot-default"></span> Default
+        </button>
+      </div>
+    </div>
+
+    <!-- With actions -->
+    <div class="demo-card">
+      <p class="demo-card-title">With Action Buttons</p>
+      <div class="btn-grid single">
+        <button onclick="showWithUndo()">
+          <span class="dot dot-default"></span> With Undo Action
+        </button>
+        <button onclick="showWithActions()">
+          <span class="dot dot-info"></span> Two Actions
+        </button>
+        <button onclick="showSticky()">
+          <span class="dot dot-warning"></span> Sticky (no auto-dismiss)
+        </button>
+      </div>
+    </div>
+
+    <!-- Position -->
+    <div class="demo-card">
+      <p class="demo-card-title">Position</p>
+      <div class="pos-grid" id="posGrid">
+        <button class="pos-btn" data-pos="top-left"      onclick="setPos(this)">↖ TL</button>
+        <button class="pos-btn" data-pos="top-center"    onclick="setPos(this)">↑ TC</button>
+        <button class="pos-btn" data-pos="top-right"     onclick="setPos(this)">↗ TR</button>
+        <button class="pos-btn" data-pos="bottom-left"   onclick="setPos(this)">↙ BL</button>
+        <button class="pos-btn" data-pos="bottom-center" onclick="setPos(this)">↓ BC</button>
+        <button class="pos-btn active" data-pos="bottom-right" onclick="setPos(this)">↘ BR</button>
+      </div>
+      <button onclick="Notify.info('Position updated to ' + currentPos + '.')">
+        <span class="dot dot-info"></span> Fire at current position
+      </button>
+    </div>
+
+    <!-- Stress test -->
+    <div class="demo-card">
+      <p class="demo-card-title">Stack &amp; Push</p>
+      <div class="btn-grid single">
+        <button onclick="fireMultiple()">
+          <span class="dot dot-accent"></span> Fire 5 at once
+        </button>
+        <button onclick="fireRapid()">
+          <span class="dot dot-accent"></span> Rapid fire (10 staggered)
+        </button>
+        <button onclick="Notify.success('This is the same message.'); Notify.success('This is the same message.')">
+          <span class="dot dot-warning"></span> Test duplicate prevention
+        </button>
+      </div>
+      <button class="dismiss-all-btn" onclick="Notify.dismissAll()">
+        ✕ Dismiss All
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Code example -->
+  <div style="max-width:900px; width:100%; margin-top: 24px;">
+    <div class="code-snippet">
+      <span class="kw">// Include in your &lt;head&gt;</span><br>
+      &lt;link rel=<span class="str">"stylesheet"</span> href=<span class="str">"notify/notify.css"</span> /&gt;<br>
+      &lt;script src=<span class="str">"notify/notify.config.js"</span>&gt;&lt;/script&gt;<br>
+      &lt;script src=<span class="str">"notify/notify.js"</span>&gt;&lt;/script&gt;<br><br>
+
+      <span class="kw">// Then use anywhere</span><br>
+      <span class="fn">Notify</span>.<span class="fn">success</span>(<span class="str">"Saved!"</span>);<br>
+      <span class="fn">Notify</span>.<span class="fn">error</span>(<span class="str">"Something broke."</span>, { title: <span class="str">"Error"</span>, duration: <span class="num">0</span> });<br>
+      <span class="fn">Notify</span>.<span class="fn">show</span>({ message: <span class="str">"Custom"</span>, type: <span class="str">"info"</span>, actions: [{ label: <span class="str">"Undo"</span>, onClick: fn }] });
+    </div>
+  </div>
+
+  <script>
+    let currentPos = 'bottom-right';
+
+    function setPos(btn) {
+      document.querySelectorAll('.pos-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentPos = btn.dataset.pos;
+      Notify.configure({ position: currentPos });
+    }
+
+    function showWithUndo() {
+      Notify.show({
+        message: '3 files moved to Trash.',
+        type: 'default',
+        duration: 6000,
+        actions: [
+          {
+            label: 'Undo',
+            primary: true,
+            onClick: () => Notify.success('Restored!'),
+          }
+        ]
+      });
+    }
+
+    function showWithActions() {
+      Notify.show({
+        title: 'Update Available',
+        message: 'v2.4.0 is ready to install.',
+        type: 'info',
+        duration: 0,
+        actions: [
+          { label: 'Later',   primary: false, onClick: () => {} },
+          { label: 'Install', primary: true,  onClick: () => Notify.success('Installing…') },
+        ]
+      });
+    }
+
+    function showSticky() {
+      Notify.show({
+        title: 'Action Required',
+        message: 'Please confirm your email to continue.',
+        type: 'warning',
+        duration: 0,
+      });
+    }
+
+    const msgs = [
+      { type: 'success', message: 'File uploaded successfully.' },
+      { type: 'info',    message: 'Sync completed.',             title: 'Sync' },
+      { type: 'warning', message: 'Quota at 80%.',               title: 'Storage' },
+      { type: 'error',   message: 'Network request failed.' },
+      { type: 'default', message: 'Background task finished.' },
+    ];
+
+    function fireMultiple() {
+      msgs.forEach(m => Notify.show(m));
+    }
+
+    let rapidTimer = null;
+    function fireRapid() {
+      let i = 0;
+      rapidTimer = setInterval(() => {
+        Notify.show(msgs[i % msgs.length]);
+        i++;
+        if (i >= 10) clearInterval(rapidTimer);
+      }, 280);
+    }
+  </script>
+</body>
+</html>
